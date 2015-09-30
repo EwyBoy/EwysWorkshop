@@ -1,0 +1,19 @@
+#Blocks
+tile.WorkshopTable.name=Workshop Table
+
+#Items
+ewysworkshop:item.blank.name=Blank Upgrade
+ewysworkshop:item.auto_crafter.name=Auto Crafter Upgrade
+ewysworkshop:item.storage.name=Storage Upgrade
+ewysworkshop:item.charged.name=Charger Upgrade
+ewysworkshop:item.speed.name=Speed Upgrade
+ewysworkshop:item.queue.name=Queueing Upgrade
+ewysworkshop:item.efficiency.name=Efficiency Upgrade
+ewysworkshop:item.lava.name=Lava Power Upgrade
+ewysworkshop:item.solar.name=Solar Power Upgrade
+ewysworkshop:item.auto_transfer.name=Auto Transfer Upgrade
+ewysworkshop:item.filter.name=Filter Upgrade
+ewysworkshop:item.transfer.name=Transfer Capacity Upgrade
+
+#Creative Tabs
+itemGroup.Ewy's Workshop=Ewy's Workshop
