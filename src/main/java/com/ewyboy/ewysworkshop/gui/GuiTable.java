@@ -44,6 +44,7 @@ public class GuiTable extends GuiBase {
         mY -= guiTop;
 
         mc.getTextureManager().bindTexture(BACKGROUND);
+        GL11.glColor3ub((byte)255, (byte)255, (byte)255);
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 
         drawSlots();
