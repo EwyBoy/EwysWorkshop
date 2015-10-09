@@ -48,9 +48,7 @@ public class WailaWorkshop implements IWailaDataProvider {
         } else {
             color = EnumChatFormatting.AQUA;
         }
-
         currenttip.add(color + "Power: " + power  + " / " + table.MAX_POWER);
-
         return currenttip;
     }
 

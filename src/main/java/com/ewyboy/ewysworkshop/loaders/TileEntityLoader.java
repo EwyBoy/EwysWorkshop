@@ -1,5 +1,6 @@
 package com.ewyboy.ewysworkshop.loaders;
 
+import com.ewyboy.ewysworkshop.tileentity.TileEntityBarrel;
 import com.ewyboy.ewysworkshop.tileentity.TileEntityTable;
 import com.ewyboy.ewysworkshop.util.Logger;
 import com.ewyboy.ewysworkshop.util.StringMap;
@@ -11,13 +12,15 @@ import java.util.concurrent.TimeUnit;
 @GameRegistry.ObjectHolder(StringMap.ID)
 public class TileEntityLoader {
 
-    public static void log(Class<TileEntityTable> tileEntity) {Logger.info(tileEntity + " successfully loaded");}
+    public static void log(Class tileEntity) {Logger.info(tileEntity + " successfully loaded");}
 
     public static void loadTileEntities() {
         Stopwatch watch = Stopwatch.createStarted();
             Logger.info("Loading tile entities started");
                 GameRegistry.registerTileEntity(TileEntityTable.class, StringMap.WorkshopTable);
                     log(TileEntityTable.class);
+                GameRegistry.registerTileEntity(TileEntityBarrel.class, StringMap.Barrel);
+                    log(TileEntityBarrel.class);
         Logger.info("Loading tile entities finished after " + watch.elapsed(TimeUnit.MILLISECONDS) + "ms");
 
     }

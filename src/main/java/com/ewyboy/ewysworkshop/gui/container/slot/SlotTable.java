@@ -1,9 +1,13 @@
 package com.ewyboy.ewysworkshop.gui.container.slot;
 
+import com.ewyboy.ewysworkshop.gui.GuiBase;
+import com.ewyboy.ewysworkshop.page.Page;
+import com.ewyboy.ewysworkshop.tileentity.TileEntityTable;
+
 public class SlotTable extends com.ewyboy.ewysworkshop.gui.container.slot.SlotBase {
     private com.ewyboy.ewysworkshop.page.Page page;
 
-    public SlotTable(com.ewyboy.ewysworkshop.tileentity.TileEntityTable table, com.ewyboy.ewysworkshop.page.Page page, int id, int x, int y) {
+    public SlotTable(TileEntityTable table, Page page, int id, int x, int y) {
         super(table, table, id, x, y);
 
         this.page = page;
@@ -15,7 +19,7 @@ public class SlotTable extends com.ewyboy.ewysworkshop.gui.container.slot.SlotBa
     }
 
     @Override
-    public int getTextureIndex(com.ewyboy.ewysworkshop.gui.GuiBase gui) {
-        return shouldSlotHighlightSelf() && shouldHighlight(this, gui.getSelectedSlot()) && gui.getSelectedSlot() instanceof com.ewyboy.ewysworkshop.gui.container.slot.SlotPlayer ? 3 : super.getTextureIndex(gui);
+    public int getTextureIndex(GuiBase gui) {
+        return shouldSlotHighlightSelf() && shouldHighlight(this, gui.getSelectedSlot()) && gui.getSelectedSlot() instanceof SlotPlayer ? 3 : super.getTextureIndex(gui);
     }
 }

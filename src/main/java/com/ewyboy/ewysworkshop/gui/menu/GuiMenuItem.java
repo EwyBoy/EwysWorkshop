@@ -65,7 +65,6 @@ public class GuiMenuItem extends GuiMenu {
         loadSearchItems();
         loadPlayerItems();
 
-
         arrows = new ArrayList<ArrowScroll>();
         arrows.add(new ArrowScroll(10, 50, 120) {
             @Override
@@ -155,16 +154,12 @@ public class GuiMenuItem extends GuiMenu {
         });
     }
 
-
-
-
     private void loadSearchItems() {
         searchItems = new ArrayList<ItemStack>();
 
         String search = textBox.getText();
         if (search != null && !search.isEmpty()) {
             search = search.toLowerCase();
-
 
             List<ItemStack> itemStacks = new ArrayList<ItemStack>();
             for (Object obj : Item.itemRegistry) {
@@ -205,9 +200,7 @@ public class GuiMenuItem extends GuiMenu {
                         foundSequence = true;
                         break;
                     }
-                }
-
-                if (!foundSequence) {
+                } if (!foundSequence) {
                     itemIterator.remove();
                 }
             }
@@ -238,7 +231,6 @@ public class GuiMenuItem extends GuiMenu {
                 }
             }
         }
-
         fixPage();
     }
 
@@ -252,7 +244,6 @@ public class GuiMenuItem extends GuiMenu {
             page = 0;
         }
     }
-
 
     private List<ItemStack> getItemList() {
         return showPlayerItems ? playerItems : searchItems;

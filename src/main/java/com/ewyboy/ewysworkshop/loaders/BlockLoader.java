@@ -1,5 +1,6 @@
 package com.ewyboy.ewysworkshop.loaders;
 
+import com.ewyboy.ewysworkshop.block.BlockBarrel;
 import com.ewyboy.ewysworkshop.block.BlockWorkshopTable;
 import com.ewyboy.ewysworkshop.util.Logger;
 import com.ewyboy.ewysworkshop.util.StringMap;
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 @GameRegistry.ObjectHolder(StringMap.ID)
 public final class BlockLoader {
 
-    public static Block workshopTable;
+    public static Block workshopTable, barrel;
     public static void log(Block block) {Logger.info("  " + block.getUnlocalizedName() + " successfully loaded");}
 
     public static void loadBlocks() {
@@ -21,6 +22,9 @@ public final class BlockLoader {
                 workshopTable = new BlockWorkshopTable().setBlockName(StringMap.WorkshopTable);
                     GameRegistry.registerBlock(workshopTable, StringMap.WorkshopTable);
                         log(workshopTable);
+                barrel = new BlockBarrel().setBlockName(StringMap.Barrel);
+                    GameRegistry.registerBlock(barrel, StringMap.Barrel);
+                        log(barrel);
         Logger.info("Loading blocks finished after " + watch.elapsed(TimeUnit.MILLISECONDS) + "ms");
     }
     private BlockLoader(){}

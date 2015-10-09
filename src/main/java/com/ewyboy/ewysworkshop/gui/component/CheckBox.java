@@ -1,5 +1,6 @@
 package com.ewyboy.ewysworkshop.gui.component;
 
+import com.ewyboy.ewysworkshop.gui.GuiBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,7 +24,7 @@ public abstract class CheckBox {
     }
 
     @SideOnly(Side.CLIENT)
-    public void draw(com.ewyboy.ewysworkshop.gui.GuiBase gui, int mX, int mY) {
+    public void draw(GuiBase gui, int mX, int mY) {
         if (isVisible()) {
             gui.prepare();
             boolean hover = gui.inBounds(x, y, SIZE, SIZE, mX, mY);
@@ -33,9 +34,8 @@ public abstract class CheckBox {
         }
     }
 
-
     @SideOnly(Side.CLIENT)
-    public void onClick(com.ewyboy.ewysworkshop.gui.GuiBase gui, int mX, int mY) {
+    public void onClick(GuiBase gui, int mX, int mY) {
         if (isVisible() && gui.inBounds(x, y, SIZE, SIZE, mX, mY)) {
             setValue(!getValue());
             onUpdate();

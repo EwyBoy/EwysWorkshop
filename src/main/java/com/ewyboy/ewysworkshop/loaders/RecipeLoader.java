@@ -23,11 +23,13 @@ public class RecipeLoader {
     private static final String GOLD = "ingotGold";
     private static final String REDSTONE_BLOCK = "blockRedstone";
     private static final String DIAMOND = "gemDiamond";
+    private static final String WOOD = "logWood";
 
     public static void loadRecipes() {
         Stopwatch watch = Stopwatch.createStarted();
             Logger.info("Loading recipes started");
-                GameRegistry.addRecipe(new ShapedOreRecipe( BlockLoader.workshopTable, "PPP", "CUC", "CCC", 'P', PLANKS, 'C', COBBLE, 'U', Upgrade.BLANK.getItemStack()));
+                GameRegistry.addRecipe(new ShapedOreRecipe(BlockLoader.workshopTable, "PPP", "CUC", "CCC", 'P', PLANKS, 'C', COBBLE, 'U', Upgrade.BLANK.getItemStack()));
+                GameRegistry.addRecipe(new ShapedOreRecipe(BlockLoader.barrel, "LIL", "LCL", "LLL", 'I', IRON, 'L', WOOD, 'C', Blocks.chest));
                 addRecipe(Upgrade.BLANK, "SP", "PS", 'S', STONE, 'P', PLANKS);
                 addRecipe(Upgrade.STORAGE, "C", "U", 'C', Blocks.chest, 'U', Upgrade.BLANK.getItemStack());
                 addRecipe(Upgrade.AUTO_CRAFTER, "PPP", "CTC", "CUC", 'P', PLANKS, 'C', COBBLE, 'T', Blocks.piston, 'U', Upgrade.BLANK.getItemStack());

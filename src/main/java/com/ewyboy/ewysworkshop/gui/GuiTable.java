@@ -10,12 +10,12 @@ import com.ewyboy.ewysworkshop.page.Page;
 import com.ewyboy.ewysworkshop.tileentity.TileEntityTable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class GuiTable extends GuiBase {
 
@@ -39,23 +39,22 @@ public class GuiTable extends GuiBase {
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int mX, int mY) {
         GL11.glPushMatrix();
-        GL11.glTranslatef(guiLeft, guiTop, 0);
-        mX -= guiLeft;
-        mY -= guiTop;
+            GL11.glTranslatef(guiLeft, guiTop, 0);
+            mX -= guiLeft;
+            mY -= guiTop;
 
-        mc.getTextureManager().bindTexture(BACKGROUND);
-        GL11.glColor3ub((byte)255, (byte)255, (byte)255);
-        drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
+            mc.getTextureManager().bindTexture(BACKGROUND);
+            GL11.glColor3ub((byte)255, (byte)255, (byte)255);
+            drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 
-        drawSlots();
-        if (table.getMenu() == null) {
-            drawPageHeaders(mX, mY);
-            drawPower(mX, mY);
-            table.getSelectedPage().draw(this, mX, mY);
-        }else{
-            table.getMenu().draw(this, mX, mY);
-        }
-
+            drawSlots();
+            if (table.getMenu() == null) {
+                drawPageHeaders(mX, mY);
+                drawPower(mX, mY);
+                table.getSelectedPage().draw(this, mX, mY);
+            }else{
+                table.getMenu().draw(this, mX, mY);
+            }
         GL11.glPopMatrix();
     }
 
@@ -143,7 +142,6 @@ public class GuiTable extends GuiBase {
         }
     }
 
-
     private static final int SLOT_SRC_X = 42;
     private static final int SLOT_SRC_Y = 0;
     private static final int SLOT_SIZE = 18;
@@ -165,7 +163,6 @@ public class GuiTable extends GuiBase {
             }
         }
     }
-
 
     private static final int POWER_X = 225;
     private static final int POWER_Y = 173;
@@ -198,8 +195,30 @@ public class GuiTable extends GuiBase {
         }
         drawRect(POWER_X, POWER_Y, srcX, POWER_SRC_Y, POWER_WIDTH, POWER_HEIGHT);
 
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("power", table.getPower());
+        int power = tag.getInteger("power");
+        EnumChatFormatting color;
+        if (power <= ((table.MAX_POWER * 12.5) / 100)) {
+            color = EnumChatFormatting.DARK_RED;
+        } else if (power <= ((table.MAX_POWER * 25) / 100)) {
+            color = EnumChatFormatting.RED;
+        } else if (power <= ((table.MAX_POWER * 37.5) / 100)) {
+            color = EnumChatFormatting.GOLD;
+        } else if (power <= ((table.MAX_POWER * 50) / 100)) {
+            color = EnumChatFormatting.YELLOW;
+        } else if (power <= ((table.MAX_POWER * 62.5) / 100)) {
+            color = EnumChatFormatting.DARK_GREEN;
+        } else if (power <= ((table.MAX_POWER * 75) / 100)) {
+            color = EnumChatFormatting.GREEN;
+        } else if (power <= ((table.MAX_POWER * 87.5) / 100)) {
+            color = EnumChatFormatting.DARK_AQUA;
+        } else {
+            color = EnumChatFormatting.AQUA;
+        }
+
         if (hover) {
-            String str = "Power: " + formatNumber(table.getPower()) + "/" + formatNumber(TileEntityTable.MAX_POWER);
+            String str = color + "Power: " + formatNumber(table.getPower()) + "/" + formatNumber(TileEntityTable.MAX_POWER);
             if (table.getLava() > 0 && table.getUpgradePage().hasGlobalUpgrade(Upgrade.LAVA)) {
                 str += "\n" + EnumChatFormatting.GOLD + "Lava: " + formatNumber(table.getLava()) + "/" + formatNumber(TileEntityTable.MAX_LAVA);
             }

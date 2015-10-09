@@ -4,10 +4,13 @@ import com.ewyboy.ewysworkshop.gui.GuiHandler;
 import com.ewyboy.ewysworkshop.loaders.*;
 import com.ewyboy.ewysworkshop.nei.INEICallback;
 import com.ewyboy.ewysworkshop.network.PacketHandler;
+import com.ewyboy.ewysworkshop.network.proxies.ClientProxy;
+import com.ewyboy.ewysworkshop.network.proxies.CommonProxy;
 import com.ewyboy.ewysworkshop.util.Logger;
 import com.ewyboy.ewysworkshop.util.StringMap;
 import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -26,6 +29,11 @@ public class EwysWorkshop {
     @Mod.Instance(StringMap.ID)
     public static EwysWorkshop instance;
 
+    @SidedProxy(modId = StringMap.ID, clientSide = StringMap.clientProxyPath, serverSide = StringMap.commonProxyPath)
+    public static CommonProxy proxy;
+
+    private double launchTime;
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         Stopwatch watch = Stopwatch.createStarted();
@@ -35,9 +43,11 @@ public class EwysWorkshop {
                 BlockLoader.loadBlocks();
                 ItemLoader.loadItems();
                 TileEntityLoader.loadTileEntities();
+                ClientProxy.init();
                 ConfigLoader.init(event.getSuggestedConfigurationFile());
-                FMLInterModComms.sendMessage("Waila", "register", "com.ewyboy.ewysworkshop.waila.Waila.onWailaCall");
-            Logger.info("Pre-Initialization finished after " + watch.elapsed(TimeUnit.MILLISECONDS) + "ms )");
+                FMLInterModComms.sendMessage("Waila", "register", StringMap.WailaPath);
+                launchTime += watch.elapsed(TimeUnit.MILLISECONDS);
+            Logger.info("Pre-Initialization finished after " + watch.elapsed(TimeUnit.MILLISECONDS) + "ms");
         Logger.info("Pre-Initialization process successfully done");
     }
 
@@ -47,7 +57,8 @@ public class EwysWorkshop {
             Logger.info("Initialization started");
                 NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
                 packetHandler.register(new PacketHandler());
-            Logger.info("Initialization finished after " + watch.elapsed(TimeUnit.MILLISECONDS) + "ms )");
+                launchTime += watch.elapsed(TimeUnit.MILLISECONDS);
+            Logger.info("Initialization finished after " + watch.elapsed(TimeUnit.MILLISECONDS) + "ms");
         Logger.info("Initialization process successfully done");
     }
 
@@ -56,7 +67,9 @@ public class EwysWorkshop {
         Stopwatch watch = Stopwatch.createStarted();
             Logger.info("Post-Initialization started");
                 RecipeLoader.loadRecipes();
-            Logger.info("Post-Initialization finished after " + watch.elapsed(TimeUnit.MILLISECONDS) + "ms )");
+                launchTime += watch.elapsed(TimeUnit.MILLISECONDS);
+            Logger.info("Post-Initialization finished after " + watch.elapsed(TimeUnit.MILLISECONDS) + "ms");
         Logger.info("Post-Initialization process successfully done");
+        Logger.info("Total launch time for " + StringMap.Name + " : " + launchTime + " ms");
     }
 }

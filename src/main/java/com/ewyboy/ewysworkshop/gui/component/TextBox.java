@@ -39,7 +39,6 @@ public class TextBox {
         }
     }
 
-
     @SideOnly(Side.CLIENT)
     private void addText(GuiBase gui, String str) {
         String newText = text.substring(0, cursor) + str + text.substring(cursor);
@@ -109,7 +108,6 @@ public class TextBox {
 
         return cursorPosition;
     }
-
 
     public String getText() {
         return text;

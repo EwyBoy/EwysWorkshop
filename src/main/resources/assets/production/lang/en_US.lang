@@ -1,5 +1,6 @@
 #Blocks
 tile.WorkshopTable.name=Workshop Table
+tile.Barrel.name=Barrel
 
 #Items
 ewysworkshop:item.blank.name=Blank Upgrade

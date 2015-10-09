@@ -1,6 +1,8 @@
 package com.ewyboy.ewysworkshop.block;
 
 import com.ewyboy.ewysworkshop.loaders.CreativeTabLoader;
+import com.ewyboy.ewysworkshop.main.EwysWorkshop;
+import com.ewyboy.ewysworkshop.tileentity.TileEntityTable;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,8 +20,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import com.ewyboy.ewysworkshop.main.EwysWorkshop;
-import com.ewyboy.ewysworkshop.tileentity.TileEntityTable;
 
 public class BlockWorkshopTable extends BlockContainer {
 
@@ -36,7 +36,7 @@ public class BlockWorkshopTable extends BlockContainer {
     }
 
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons;
+    private IIcon[] icons, front;
 
 
     @SideOnly(Side.CLIENT)
@@ -50,6 +50,11 @@ public class BlockWorkshopTable extends BlockContainer {
                 register.registerIcon("production:left"),
                 register.registerIcon("production:right"),
         };
+        for (int i = 0; i < 8; i++) {
+            front = new IIcon[]{
+                    register.registerIcon("production:front" + i),
+            };
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -96,7 +101,6 @@ public class BlockWorkshopTable extends BlockContainer {
         if (!world.isRemote) {
             FMLNetworkHandler.openGui(player, EwysWorkshop.instance, 0, world, x, y, z);
         }
-
         return true;
     }
 

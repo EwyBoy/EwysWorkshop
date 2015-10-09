@@ -821,7 +821,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
     }
 
     private void clearGrid(EntityPlayer player, int id) {
-
         UnitCrafting crafting = getMainPage().getCraftingList().get(id);
         if (crafting.isEnabled()) {
             int[] from = new int[9];
@@ -832,7 +831,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
             for (int i = 0; i < to.length; i++) {
                 to[i] = i;
             }
-
             transfer(this, player.inventory, from, to, -1, -1, Integer.MAX_VALUE);
         }
     }
