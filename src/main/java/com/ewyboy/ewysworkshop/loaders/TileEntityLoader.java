@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 @GameRegistry.ObjectHolder(StringMap.ID)
 public class TileEntityLoader {
 
-    public static void log(Class tileEntity) {Logger.info(tileEntity + " successfully loaded");}
+    public static void log(Class tileEntity) {Logger.info("  " + tileEntity + " successfully loaded");}
 
     public static void loadTileEntities() {
         Stopwatch watch = Stopwatch.createStarted();

@@ -38,15 +38,14 @@ public class BlockWorkshopTable extends BlockContainer {
     @SideOnly(Side.CLIENT)
     private IIcon[] icons, front;
 
-
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister register) {
         icons = new IIcon[]  {
                 register.registerIcon("production:bot"),
                 register.registerIcon("production:top"),
-                register.registerIcon("production:front"),
                 register.registerIcon("production:back"),
+                register.registerIcon("production:front0"),
                 register.registerIcon("production:left"),
                 register.registerIcon("production:right"),
         };

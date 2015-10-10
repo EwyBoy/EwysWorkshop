@@ -15,7 +15,8 @@ public final class ConfigLoader {
 
     private static final String UPGRADES = "Upgrades";
     private static final String MAX_COUNT_SUFFIX = ".max_count";
-
+    public static boolean doRenderSpinningEntity;
+    public static float SPIN_SPEED;
     public static int MAX_POWER,MAX_LAVA,MAX_LAVA_DRAIN,LAVA_EFFICIENCY,SOLAR_GENERATION,FUEL_DELAY;
 
     public static void init(File file) {
@@ -37,6 +38,10 @@ public final class ConfigLoader {
                             Logger.info(spacing + "Solar Generation = " + SOLAR_GENERATION);
                         FUEL_DELAY = config.getInt("Fuel Delay", StringMap.ConfigCategoryTweaks, 15, 0, Integer.MAX_VALUE, "Sets the amount of ticks between each time the worktable consumes a fuel resource");
                             Logger.info(spacing + "Fuel Delay = " + FUEL_DELAY);
+                        SPIN_SPEED = config.getFloat("Spin Speed", StringMap.ConfigCategoryTweaks, 0.25f, -1.0f, 1.0f, "Sets the spin speed of the rotating entity in the barrel display");
+                            Logger.info(spacing + "Spin Speed = " + SPIN_SPEED);
+                        doRenderSpinningEntity = config.getBoolean("doRenderSpinningEntity", StringMap.ConfigCategoryTogglable, true, "Set to false to disable spinning entity animation in the barrel display");
+                            Logger.info(spacing + "doRenderSpinningEntity = " + doRenderSpinningEntity);
                         for (Upgrade upgrade : Upgrade.values()) {
                             Upgrade.MaxCount max = upgrade.getMaxCountObject();
                             if (max.getConfigurableMax() > 0) {

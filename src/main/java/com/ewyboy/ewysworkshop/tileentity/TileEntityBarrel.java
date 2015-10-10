@@ -44,9 +44,7 @@ public class TileEntityBarrel extends TileEntity implements IInventory, ISidedIn
     }
 
     @Override
-    public void setInventorySlotContents(int id, ItemStack item) {
-
-    }
+    public void setInventorySlotContents(int id, ItemStack item) {}
 
     @Override
     public String getInventoryName() {

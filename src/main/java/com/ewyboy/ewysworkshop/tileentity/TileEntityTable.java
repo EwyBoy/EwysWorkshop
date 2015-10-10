@@ -363,7 +363,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                 }else{
                     inventory = (IInventory)te;
                 }
-
                 List<SlotBase> transferSlots = setting.getSlots();
                 if (transferSlots == null) {
                     return;
@@ -372,7 +371,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                 for (int i = 0; i < transferSlots.size(); i++) {
                     slots1[i] = transferSlots.get(i).getSlotIndex();
                 }
-
                 int[] slots2;
                 ForgeDirection directionReversed = direction.getOpposite();
                 if (inventory instanceof ISidedInventory) {
@@ -383,20 +381,15 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                         slots2[i] = i;
                     }
                 }
-
-
                 if (slots2 == null ||slots2.length == 0) {
                     return;
                 }
-
                 if (transfer.isInput()) {
                     transfer(inventory, this, slots2, slots1, directionReversed.ordinal(), direction.ordinal(), transferSize);
                 }else{
                     transfer(this, inventory, slots1, slots2, direction.ordinal(), directionReversed.ordinal(), transferSize);
                 }
             }
-
-
         }
     }
 
@@ -437,7 +430,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                                 }
                             }
                         }
-
                         if (fromItem.stackSize > 0) {
                             for (int toSlot : toSlots) {
                                 ItemStack toItem = to.getStackInSlot(toSlot);
@@ -496,7 +488,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                 lava -= move;
             }
         }
-
         ItemStack fuel = fuelSlot.getStack();
         if (fuel != null && fuelSlot.isItemValid(fuel)) {
             int fuelLevel = TileEntityFurnace.getItemBurnTime(fuel);
@@ -511,7 +502,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                 }
             }
         }
-
         if (power > MAX_POWER) {
             power = MAX_POWER;
         }

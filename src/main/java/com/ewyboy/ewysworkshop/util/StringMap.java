@@ -34,6 +34,7 @@ public class StringMap {
 
     //Configs
     public static final String ConfigCategoryTweaks = "Tweaks";
+    public static final String ConfigCategoryTogglable = "Togglable";
 
     //Pages
     public static final String PageMain = "main";
