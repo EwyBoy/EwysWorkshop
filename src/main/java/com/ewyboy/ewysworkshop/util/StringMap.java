@@ -34,7 +34,11 @@ public class StringMap {
 
     //Configs
     public static final String ConfigCategoryTweaks = "Tweaks";
-    public static final String ConfigCategoryTogglable = "Togglable";
+    public static final String ConfigCategoryTogglable = "Togglables";
+    public static final String ConfigCategoryUpgrades = "Upgrades";
+
+    //NBT
+    public static final String NBTDirection = "forgeDirection";
 
     //Pages
     public static final String PageMain = "main";

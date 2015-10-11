@@ -6,7 +6,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityBarrel extends TileEntity implements IInventory, ISidedInventory {
+public class TileEntityBarrel extends BaseTileEntity implements IInventory, ISidedInventory {
+
+    public TileEntityBarrel() {
+        setOrientation(getOrientation());
+    }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {

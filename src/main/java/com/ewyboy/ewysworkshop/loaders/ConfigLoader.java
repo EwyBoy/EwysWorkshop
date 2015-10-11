@@ -13,9 +13,8 @@ import java.util.concurrent.TimeUnit;
 @GameRegistry.ObjectHolder(StringMap.ID)
 public final class ConfigLoader {
 
-    private static final String UPGRADES = "Upgrades";
-    private static final String MAX_COUNT_SUFFIX = ".max_count";
-    public static boolean doRenderSpinningEntity;
+    private static final String MAX_COUNT_SUFFIX = " maximum amount";
+    public static boolean doRenderSpinningEntity, debugMode;
     public static float SPIN_SPEED;
     public static int MAX_POWER,MAX_LAVA,MAX_LAVA_DRAIN,LAVA_EFFICIENCY,SOLAR_GENERATION,FUEL_DELAY;
 
@@ -40,12 +39,15 @@ public final class ConfigLoader {
                             Logger.info(spacing + "Fuel Delay = " + FUEL_DELAY);
                         SPIN_SPEED = config.getFloat("Spin Speed", StringMap.ConfigCategoryTweaks, 0.25f, -1.0f, 1.0f, "Sets the spin speed of the rotating entity in the barrel display");
                             Logger.info(spacing + "Spin Speed = " + SPIN_SPEED);
-                        doRenderSpinningEntity = config.getBoolean("doRenderSpinningEntity", StringMap.ConfigCategoryTogglable, true, "Set to false to disable spinning entity animation in the barrel display");
-                            Logger.info(spacing + "doRenderSpinningEntity = " + doRenderSpinningEntity);
+                        debugMode = config.getBoolean("Debug Mode", StringMap.ConfigCategoryTogglable, false, "Set true to turn on developer debug mode for debugging info in console");
+                            Logger.info(spacing + "Debug Mode = " + debugMode);
+                        doRenderSpinningEntity = config.getBoolean("Do Render Spinning Entity", StringMap.ConfigCategoryTogglable, true, "Set to false to disable spinning entity animation in the barrel display");
+                            Logger.info(spacing + "Do Render Spinning Entity = " + doRenderSpinningEntity);
                         for (Upgrade upgrade : Upgrade.values()) {
                             Upgrade.MaxCount max = upgrade.getMaxCountObject();
                             if (max.getConfigurableMax() > 0) {
-                                upgrade.getMaxCountObject().setMax(config.getInt(upgrade.getUnlocalizedName() + MAX_COUNT_SUFFIX, UPGRADES, max.getMax(), 0, max.getConfigurableMax(), "Max count of the " + upgrade.getName() + " upgrade"));
+                                upgrade.getMaxCountObject().setMax(config.getInt(upgrade.getName() + MAX_COUNT_SUFFIX, StringMap.ConfigCategoryUpgrades, max.getMax(), 0, max.getConfigurableMax(), "Max amount of the " + upgrade.getName() + " upgrade"));
+                                Logger.info(spacing + upgrade.getName() + " = " + max.getMax());
                             }
                         }
                     config.save();
