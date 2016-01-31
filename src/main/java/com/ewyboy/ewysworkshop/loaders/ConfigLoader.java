@@ -14,9 +14,8 @@ import java.util.concurrent.TimeUnit;
 public final class ConfigLoader {
 
     private static final String MAX_COUNT_SUFFIX = " maximum amount";
-    public static boolean doRenderSpinningEntity, debugMode;
-    public static float SPIN_SPEED;
-    public static int MAX_POWER,MAX_LAVA,MAX_LAVA_DRAIN,LAVA_EFFICIENCY,SOLAR_GENERATION,FUEL_DELAY;
+    public static boolean doRenderSpinningEntity, debugMode, RFSupport;
+    public static int MAX_POWER, MAX_LAVA, MAX_LAVA_DRAIN, LAVA_EFFICIENCY, SOLAR_GENERATION, FUEL_DELAY, RF_BUFFER, RF_CONVERSION_RATE, RF_CONVERSION_RATIO;
 
     public static void init(File file) {
         String spacing = "  ";
@@ -37,10 +36,16 @@ public final class ConfigLoader {
                             Logger.info(spacing + "Solar Generation = " + SOLAR_GENERATION);
                         FUEL_DELAY = config.getInt("Fuel Delay", StringMap.ConfigCategoryTweaks, 15, 0, Integer.MAX_VALUE, "Sets the amount of ticks between each time the worktable consumes a fuel resource");
                             Logger.info(spacing + "Fuel Delay = " + FUEL_DELAY);
-                        SPIN_SPEED = config.getFloat("Spin Speed", StringMap.ConfigCategoryTweaks, 0.25f, -1.0f, 1.0f, "Sets the spin speed of the rotating entity in the barrel display");
-                            Logger.info(spacing + "Spin Speed = " + SPIN_SPEED);
+                        RF_BUFFER = config.getInt("RF Buffer Capacity", StringMap.ConfigCategoryTweaks, 5000, 100, Integer.MAX_VALUE, "Sets the internal RF buffer capacity if CoFH Core is added");
+                            Logger.info(spacing + "RF Buffer Capacity = " + RF_BUFFER);
+                        RF_CONVERSION_RATE = config.getInt("RF Conversion Rate", StringMap.ConfigCategoryTweaks, 50, 1, Integer.MAX_VALUE, "Sets the amount of RF converted to power on each fuel reload session (RF -> Power for each (Fuel Delay) tick)");
+                            Logger.info(spacing + "RF Conversion Rate = " + RF_CONVERSION_RATE);
+                        RF_CONVERSION_RATIO = config.getInt("RF Conversion Ratio", StringMap.ConfigCategoryTweaks, 1, 1, Integer.MAX_VALUE, "Sets the ratio RF gets converted to power (RF Conversion Ratio for each Power (Default 10:1 ratio)) THIS CAN NOT BE LOWER OR EQUAL TO THE CONVERSION RATE!");
+                            Logger.info(spacing + "RF Conversion Ratio = " + RF_CONVERSION_RATIO + ":1 ratio");
                         debugMode = config.getBoolean("Debug Mode", StringMap.ConfigCategoryTogglable, false, "Set true to turn on developer debug mode for debugging info in console");
                             Logger.info(spacing + "Debug Mode = " + debugMode);
+                        RFSupport = config.getBoolean("RF Support", StringMap.ConfigCategoryTogglable, true, "Set to false to disable RF support if CoFH Core is added");
+                            Logger.info(spacing + "RF Support = " + RFSupport);
                         doRenderSpinningEntity = config.getBoolean("Do Render Spinning Entity", StringMap.ConfigCategoryTogglable, true, "Set to false to disable spinning entity animation in the barrel display");
                             Logger.info(spacing + "Do Render Spinning Entity = " + doRenderSpinningEntity);
                         for (Upgrade upgrade : Upgrade.values()) {

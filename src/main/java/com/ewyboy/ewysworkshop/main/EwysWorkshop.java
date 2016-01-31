@@ -2,14 +2,16 @@ package com.ewyboy.ewysworkshop.main;
 
 import com.ewyboy.ewysworkshop.gui.GuiHandler;
 import com.ewyboy.ewysworkshop.loaders.*;
-import com.ewyboy.ewysworkshop.nei.INEICallback;
+import com.ewyboy.ewysworkshop.dependencies.nei.INEICallback;
 import com.ewyboy.ewysworkshop.network.PacketHandler;
 import com.ewyboy.ewysworkshop.network.proxies.ClientProxy;
 import com.ewyboy.ewysworkshop.network.proxies.CommonProxy;
 import com.ewyboy.ewysworkshop.util.Logger;
 import com.ewyboy.ewysworkshop.util.StringMap;
 import com.google.common.base.Stopwatch;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -34,17 +36,28 @@ public class EwysWorkshop {
 
     private double launchTime;
 
+    public boolean isCoFHCoreLoaded() {
+        if (Loader.isModLoaded("CoFHCore")) {
+            Logger.info("CoFH-Core found");
+            if (ConfigLoader.RFSupport) {
+                Logger.info("RF support activated");
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         Stopwatch watch = Stopwatch.createStarted();
             Logger.info("Pre-Initialization started");
                 packetHandler = NetworkRegistry.INSTANCE.newEventDrivenChannel(StringMap.Channel);
+                ConfigLoader.init(event.getSuggestedConfigurationFile());
+                isCoFHCoreLoaded();
                 new CreativeTabLoader();
                 BlockLoader.loadBlocks();
                 ItemLoader.loadItems();
                 TileEntityLoader.loadTileEntities();
-                ClientProxy.init();
-                ConfigLoader.init(event.getSuggestedConfigurationFile());
                 FMLInterModComms.sendMessage("Waila", "register", StringMap.WailaPath);
                 launchTime += watch.elapsed(TimeUnit.MILLISECONDS);
             Logger.info("Pre-Initialization finished after " + watch.elapsed(TimeUnit.MILLISECONDS) + "ms");

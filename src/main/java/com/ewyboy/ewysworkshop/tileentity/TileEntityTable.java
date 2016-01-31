@@ -1,5 +1,7 @@
 package com.ewyboy.ewysworkshop.tileentity;
 
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyHandler;
 import com.ewyboy.ewysworkshop.block.BlockWorkshopTable;
 import com.ewyboy.ewysworkshop.gui.container.slot.SlotBase;
 import com.ewyboy.ewysworkshop.gui.container.slot.SlotFuel;
@@ -19,6 +21,8 @@ import com.ewyboy.ewysworkshop.page.setting.Transfer;
 import com.ewyboy.ewysworkshop.page.unit.Unit;
 import com.ewyboy.ewysworkshop.page.unit.UnitCrafting;
 import com.ewyboy.ewysworkshop.util.StringMap;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -31,16 +35,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityTable extends TileEntity implements IInventory, ISidedInventory, IFluidHandler {
+@Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore")
+public class TileEntityTable extends TileEntity implements IInventory, ISidedInventory, IFluidHandler, IEnergyHandler {
+
     private List<Page> pages;
     private Page selectedPage;
     private List<SlotBase> slots;
@@ -73,6 +75,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
             id = page.createSlots(id);
         }
         items = new ItemStack[slots.size()];
+        energy = new EnergyStorage(ConfigLoader.RF_BUFFER, ConfigLoader.RF_CONVERSION_RATE);
 
         setSelectedPage(pages.get(0));
         onUpgradeChange();
@@ -134,7 +137,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
             if (item.stackSize == 0) {
                 setInventorySlotContents(id, null);
             }
-
             return result;
         }else {
             return null;
@@ -474,6 +476,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
 
     private int lastPower;
     private int lastLava;
+
     private void reloadFuel() {
 
         if (isLitAndCanSeeTheSky()) {
@@ -488,6 +491,11 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                 lava -= move;
             }
         }
+
+        if (Loader.isModLoaded("CoFHCore")) {
+            convertRFToPower();
+        }
+
         ItemStack fuel = fuelSlot.getStack();
         if (fuel != null && fuelSlot.isItemValid(fuel)) {
             int fuelLevel = TileEntityFurnace.getItemBurnTime(fuel);
@@ -514,6 +522,16 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
         if (lava != lastLava) {
             lastLava = lava;
             sendDataToAllPlayer(DataType.LAVA);
+        }
+    }
+
+    @Optional.Method(modid = "CoFHCore")
+    private void convertRFToPower() {
+        if (getUpgradePage().hasGlobalUpgrade(Upgrade.RF)) {
+            if (energy.getEnergyStored() >= ConfigLoader.RF_CONVERSION_RATE) {
+                energy.extractEnergy(ConfigLoader.RF_CONVERSION_RATE, false);
+                power += (ConfigLoader.RF_CONVERSION_RATE / ConfigLoader.RF_CONVERSION_RATIO);
+            }
         }
     }
 
@@ -687,6 +705,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
     private static final String NBT_SLOT = "Slot";
     private static final String NBT_POWER = "Power";
     private static final String NBT_LAVA = "LavaLevel";
+    private static final String NBT_RF = "RF";
     private static final int COMPOUND_ID = 10;
 
     @Override
@@ -732,8 +751,8 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
             settingCompound.setTag(NBT_SIDES, sideList);
             settingList.appendTag(settingCompound);
         }
+        energy.writeToNBT(compound);
         compound.setTag(NBT_SETTINGS, settingList);
-
         compound.setShort(NBT_POWER, (short)power);
         compound.setShort(NBT_LAVA, (byte) lava);
     }
@@ -783,7 +802,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                 side.getOutput().readFromNBT(outputCompound);
             }
         }
-
+        energy.readFromNBT(compound);
         power = compound.getShort(NBT_POWER);
         lava = compound.getShort(NBT_LAVA);
 
@@ -791,9 +810,8 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
     }
 
     public void spitOutItem(ItemStack item) {
-        float offsetX = worldObj.rand.nextFloat() * 0.8F + 0.1F;
-        float offsetY = worldObj.rand.nextFloat() * 0.8F + 0.1F;
-        float offsetZ = worldObj.rand.nextFloat() * 0.8F + 0.1F;
+        float offsetX, offsetY, offsetZ;
+        offsetX = offsetY = offsetZ = worldObj.rand.nextFloat() * 0.8F + 1.0F;
 
         EntityItem entityItem = new EntityItem(worldObj, xCoord + offsetX, yCoord + offsetY, zCoord + offsetZ, item.copy());
         entityItem.motionX = worldObj.rand.nextGaussian() * 0.05F;
@@ -825,5 +843,35 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
         }
     }
 
+    public EnergyStorage energy;
 
+    @Optional.Method(modid = "CoFHCore")
+    @Override
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        return energy.receiveEnergy(maxReceive,simulate);
+    }
+
+    @Optional.Method(modid = "CoFHCore")
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        return energy.extractEnergy(maxExtract,simulate);
+    }
+
+    @Optional.Method(modid = "CoFHCore")
+    @Override
+    public int getEnergyStored(ForgeDirection from) {
+        return energy.getEnergyStored();
+    }
+
+    @Optional.Method(modid = "CoFHCore")
+    @Override
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return energy.getMaxEnergyStored();
+    }
+
+    @Optional.Method(modid = "CoFHCore")
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
+        return (getUpgradePage().hasGlobalUpgrade(Upgrade.RF));
+    }
 }

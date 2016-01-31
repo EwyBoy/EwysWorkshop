@@ -1,6 +1,7 @@
 package com.ewyboy.ewysworkshop.item;
 
 import com.ewyboy.ewysworkshop.loaders.ItemLoader;
+import com.ewyboy.ewysworkshop.main.EwysWorkshop;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiScreen;
@@ -23,6 +24,7 @@ public enum Upgrade {
     QUEUE("Input Queue", "Adds an input queue", new MaxCount(3), ParentType.SMELTING),
     EFFICIENCY("Fuel Efficiency", "Improves the fuel efficiency of solid fuel types", new ConfigurableMax(4), ParentType.GLOBAL),
     LAVA("Lava Generator", "Allows lava to be used as fuel", new MaxCount(1), ParentType.GLOBAL),
+    RF("Redstone Flux Acceptor", "Allows RF to be used as fuel", new MaxCount(1), ParentType.GLOBAL),
     SOLAR("Solar Generator", "Allows the table to be charged by solar power", new ConfigurableMax(1),  ParentType.GLOBAL),
     AUTO_TRANSFER("Auto Transfer", "Enables auto transfer to and from the table", new MaxCount(1), ParentType.GLOBAL),
     FILTER("Filter", "Enables transfer filters", new MaxCount(1),  ParentType.GLOBAL),
@@ -91,13 +93,14 @@ public enum Upgrade {
     }
 
     public void addInfo(List<String> info) {
+        EwysWorkshop ewysWorkshop = new EwysWorkshop();
         info.add(EnumChatFormatting.GRAY + description);
         if (GuiScreen.isShiftKeyDown()) {
             if (getMaxCount() == 1) {
                 info.add(EnumChatFormatting.YELLOW + "Doesn't stack well");
             }else if (getMaxCount() > 1) {
                 info.add(EnumChatFormatting.YELLOW + "Stacks well up to " + getMaxCount() + " items");
-            }else if(!isEnabled()) {
+            }else if(!isEnabled() || !ewysWorkshop.isCoFHCoreLoaded()) {
                 info.add(EnumChatFormatting.DARK_RED + "This item is disabled");
             }
 

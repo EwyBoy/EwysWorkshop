@@ -38,6 +38,7 @@ public class RecipeLoader {
                 addRecipe(Upgrade.QUEUE, "PPP", "IUI", "PPP", 'I', IRON, 'P', PLANKS, 'U', Upgrade.BLANK.getItemStack());
                 addRecipe(Upgrade.LAVA, "NFN", "NUN", "NNN", 'N', Blocks.netherrack, 'F', Blocks.furnace, 'U', Upgrade.BLANK.getItemStack());
                 addRecipe(Upgrade.SOLAR, "CCC", "IGI", "DUD", 'I', IRON, 'G', GLOW_STONE, 'C', GLASS, 'U', DIAMOND,'D', Upgrade.BLANK.getItemStack());
+                addRecipe(Upgrade.RF, "ORO", "RDR", "ORO", 'O', IRON, 'R', REDSTONE_BLOCK, 'D', Upgrade.BLANK.getItemStack());
                 addRecipe(Upgrade.EFFICIENCY, "III", "FPF", "RUR", 'I', IRON, 'R', REDSTONE, 'F', Blocks.furnace, 'P', Blocks.piston, 'U', Upgrade.BLANK.getItemStack());
                 addRecipe(Upgrade.AUTO_TRANSFER, "GGG", "HUH", "GGG", 'G', GOLD, 'H', Blocks.hopper, 'U', Upgrade.BLANK.getItemStack());
                 addRecipe(Upgrade.FILTER, "III", "GBG", "IUI", 'G', Blocks.light_weighted_pressure_plate, 'I', IRON, 'B', Blocks.iron_bars, 'U', Upgrade.BLANK.getItemStack());

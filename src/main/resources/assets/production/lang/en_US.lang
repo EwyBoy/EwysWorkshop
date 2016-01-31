@@ -11,6 +11,7 @@ ewysworkshop:item.speed.name=Speed Upgrade
 ewysworkshop:item.queue.name=Queueing Upgrade
 ewysworkshop:item.efficiency.name=Efficiency Upgrade
 ewysworkshop:item.lava.name=Lava Power Upgrade
+ewysworkshop:item.rf.name=RF Acceptor Upgrade
 ewysworkshop:item.solar.name=Solar Power Upgrade
 ewysworkshop:item.auto_transfer.name=Auto Transfer Upgrade
 ewysworkshop:item.filter.name=Filter Upgrade

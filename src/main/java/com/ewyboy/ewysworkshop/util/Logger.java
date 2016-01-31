@@ -10,7 +10,6 @@ public class Logger {
     public static void log(Level logLevel, Object object) {
         FMLLog.log(StringMap.Name, logLevel, String.valueOf(object), new Object[0]);
     }
-
     public static void all(Object object) {
         log(Level.ALL, object);
     }
