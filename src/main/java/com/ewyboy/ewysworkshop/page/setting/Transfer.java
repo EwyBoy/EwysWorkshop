@@ -1,6 +1,5 @@
 package com.ewyboy.ewysworkshop.page.setting;
 
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

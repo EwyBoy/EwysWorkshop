@@ -1,17 +1,15 @@
 package com.ewyboy.ewysworkshop.main;
 
+import com.ewyboy.ewysworkshop.dependencies.nei.INEICallback;
 import com.ewyboy.ewysworkshop.gui.GuiHandler;
 import com.ewyboy.ewysworkshop.loaders.*;
-import com.ewyboy.ewysworkshop.dependencies.nei.INEICallback;
 import com.ewyboy.ewysworkshop.network.PacketHandler;
-import com.ewyboy.ewysworkshop.network.proxies.ClientProxy;
 import com.ewyboy.ewysworkshop.network.proxies.CommonProxy;
 import com.ewyboy.ewysworkshop.util.Logger;
 import com.ewyboy.ewysworkshop.util.StringMap;
 import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;

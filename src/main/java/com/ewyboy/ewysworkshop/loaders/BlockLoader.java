@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 @GameRegistry.ObjectHolder(StringMap.ID)
 public final class BlockLoader {
 
-    public static Block workshopTable, barrel;
+    public static Block workshopTable;
     public static void log(Block block) {Logger.info("  " + block.getUnlocalizedName() + " successfully loaded");}
 
     public static void loadBlocks() {

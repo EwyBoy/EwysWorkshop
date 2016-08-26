@@ -38,10 +38,6 @@ public class BaseBlock extends BlockContainer {
 
     public static int blockFacing;
 
-    public static int getBlockFacing() {
-        return blockFacing;
-    }
-
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase, ItemStack itemStack) {
         super.onBlockPlacedBy(world, x, y, z, entityLivingBase, itemStack);
@@ -83,7 +79,6 @@ public class BaseBlock extends BlockContainer {
                     world.spawnEntityInWorld(entityItem);
                     itemStack.stackSize = 0;
                 }
-
             }
         }
     }

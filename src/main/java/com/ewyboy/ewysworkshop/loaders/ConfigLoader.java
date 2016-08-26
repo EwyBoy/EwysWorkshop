@@ -46,8 +46,6 @@ public final class ConfigLoader {
                             Logger.info(spacing + "Debug Mode = " + debugMode);
                         RFSupport = config.getBoolean("RF Support", StringMap.ConfigCategoryTogglable, true, "Set to false to disable RF support if CoFH Core is added");
                             Logger.info(spacing + "RF Support = " + RFSupport);
-                        doRenderSpinningEntity = config.getBoolean("Do Render Spinning Entity", StringMap.ConfigCategoryTogglable, true, "Set to false to disable spinning entity animation in the barrel display");
-                            Logger.info(spacing + "Do Render Spinning Entity = " + doRenderSpinningEntity);
                         for (Upgrade upgrade : Upgrade.values()) {
                             Upgrade.MaxCount max = upgrade.getMaxCountObject();
                             if (max.getConfigurableMax() > 0) {

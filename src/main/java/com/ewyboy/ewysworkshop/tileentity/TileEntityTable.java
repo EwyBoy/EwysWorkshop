@@ -23,6 +23,7 @@ import com.ewyboy.ewysworkshop.page.unit.UnitCrafting;
 import com.ewyboy.ewysworkshop.util.StringMap;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -317,6 +318,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
     public void updateEntity() {
         for (Page page : pages) {
             page.onUpdate();
+            if (page.equals(Upgrade.RF)) Minecraft.getMinecraft().renderGlobal.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
         }
 
         if (!worldObj.isRemote && ++fuelTick >= FUEL_DELAY) {
@@ -353,8 +355,8 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
     private void transfer(Setting setting, Side side, Transfer transfer, int transferSize) {
         if (transfer.isEnabled() && transfer.isAuto()) {
             ForgeDirection direction = ForgeDirection.values()[BlockWorkshopTable.getSideFromSideAndMetaReversed(side.getDirection().ordinal(), getBlockMetadata())];
-
             TileEntity te = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+
             if (te instanceof IInventory) {
                 IInventory inventory;
                 if (te instanceof TileEntityChest) {
@@ -362,33 +364,42 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                     if (inventory == null) {
                         return;
                     }
-                }else{
+                } else {
                     inventory = (IInventory)te;
                 }
+
                 List<SlotBase> transferSlots = setting.getSlots();
+
                 if (transferSlots == null) {
                     return;
                 }
+
                 int[] slots1 = new int[transferSlots.size()];
+
                 for (int i = 0; i < transferSlots.size(); i++) {
                     slots1[i] = transferSlots.get(i).getSlotIndex();
                 }
+
                 int[] slots2;
+
                 ForgeDirection directionReversed = direction.getOpposite();
+
                 if (inventory instanceof ISidedInventory) {
                     slots2 = ((ISidedInventory)inventory).getAccessibleSlotsFromSide(directionReversed.ordinal());
-                }else{
+                } else {
                     slots2 = new int[inventory.getSizeInventory()];
                     for (int i = 0; i < slots2.length; i++) {
                         slots2[i] = i;
                     }
                 }
+
                 if (slots2 == null ||slots2.length == 0) {
                     return;
                 }
+
                 if (transfer.isInput()) {
                     transfer(inventory, this, slots2, slots1, directionReversed.ordinal(), direction.ordinal(), transferSize);
-                }else{
+                } else {
                     transfer(this, inventory, slots1, slots2, direction.ordinal(), directionReversed.ordinal(), transferSize);
                 }
             }
@@ -591,6 +602,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
 
     private int[] getSlotIndexArray(List<SlotBase> slots) {
         int[] result = new int[slots.size()];
+
         for (int j = 0; j < slots.size(); j++) {
             result[j] = slots.get(j).getSlotIndex();
         }
@@ -695,7 +707,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
         this.lit = lit;
     }
 
-
     private static final String NBT_ITEMS = "Items";
     private static final String NBT_UNITS = "Units";
     private static final String NBT_SETTINGS = "Settings";
@@ -705,7 +716,6 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
     private static final String NBT_SLOT = "Slot";
     private static final String NBT_POWER = "Power";
     private static final String NBT_LAVA = "LavaLevel";
-    private static final String NBT_RF = "RF";
     private static final int COMPOUND_ID = 10;
 
     @Override
@@ -721,6 +731,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
                 itemList.appendTag(slotCompound);
             }
         }
+
         compound.setTag(NBT_ITEMS, itemList);
 
         NBTTagList unitList = new NBTTagList();
@@ -729,13 +740,15 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
             unit.writeToNBT(unitCompound);
             unitList.appendTag(unitCompound);
         }
+
         compound.setTag(NBT_UNITS, unitList);
-
         NBTTagList settingList = new NBTTagList();
-        for (Setting setting : getTransferPage().getSettings()) {
-            NBTTagCompound settingCompound = new NBTTagCompound();
 
+        for (Setting setting : getTransferPage().getSettings()) {
+
+            NBTTagCompound settingCompound = new NBTTagCompound();
             NBTTagList sideList = new NBTTagList();
+
             for (Side side : setting.getSides()) {
                 NBTTagCompound sideCompound = new NBTTagCompound();
                 NBTTagCompound inputCompound = new NBTTagCompound();
@@ -751,6 +764,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
             settingCompound.setTag(NBT_SIDES, sideList);
             settingList.appendTag(settingCompound);
         }
+
         energy.writeToNBT(compound);
         compound.setTag(NBT_SETTINGS, settingList);
         compound.setShort(NBT_POWER, (short)power);
@@ -762,8 +776,8 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
         super.readFromNBT(compound);
 
         items = new ItemStack[getSizeInventory()];
-
         NBTTagList itemList = compound.getTagList(NBT_ITEMS, COMPOUND_ID);
+
         for (int i = 0; i < itemList.tagCount(); i++) {
             NBTTagCompound slotCompound = itemList.getCompoundTagAt(i);
             int id = slotCompound.getByte(NBT_SLOT);
@@ -778,6 +792,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
 
         NBTTagList unitList = compound.getTagList(NBT_UNITS, COMPOUND_ID);
         List<Unit> units = getMainPage().getUnits();
+
         for (int i = 0; i < units.size(); i++) {
             Unit unit = units.get(i);
             NBTTagCompound unitCompound = unitList.getCompoundTagAt(i);
@@ -787,6 +802,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
 
         NBTTagList settingList = compound.getTagList(NBT_SETTINGS, COMPOUND_ID);
         List<Setting> settings = getTransferPage().getSettings();
+
         for (int i = 0; i < settings.size(); i++) {
             Setting setting = settings.get(i);
             NBTTagCompound settingCompound = settingList.getCompoundTagAt(i);
@@ -822,6 +838,7 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
     }
 
     private static final IBitCount GRID_ID_BITS = new LengthCount(4);
+
     public void clearGridSend(int id) {
         DataWriter dw = PacketHandler.getWriter(this, PacketId.CLEAR);
         dw.writeData(id, GRID_ID_BITS);
@@ -874,4 +891,5 @@ public class TileEntityTable extends TileEntity implements IInventory, ISidedInv
     public boolean canConnectEnergy(ForgeDirection from) {
         return (getUpgradePage().hasGlobalUpgrade(Upgrade.RF));
     }
+
 }

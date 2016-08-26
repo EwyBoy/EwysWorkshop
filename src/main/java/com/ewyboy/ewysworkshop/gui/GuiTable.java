@@ -199,6 +199,7 @@ public class GuiTable extends GuiBase {
         tag.setInteger("power", table.getPower());
         int power = tag.getInteger("power");
         EnumChatFormatting color;
+
         if (power <= ((table.MAX_POWER * 12.5) / 100)) {
             color = EnumChatFormatting.DARK_RED;
         } else if (power <= ((table.MAX_POWER * 25) / 100)) {

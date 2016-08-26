@@ -23,11 +23,6 @@ public class BaseTileEntity extends TileEntity {
         this.orientation = orientation;
     }
 
-    public void setOrientation(int orientation)
-    {
-        this.orientation = ForgeDirection.getOrientation(orientation);
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);

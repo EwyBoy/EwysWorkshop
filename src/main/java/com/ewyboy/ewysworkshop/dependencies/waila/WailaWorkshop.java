@@ -31,6 +31,7 @@ public class WailaWorkshop implements IWailaDataProvider {
         TileEntityTable table = (TileEntityTable)accessor.getTileEntity();
         int power = tag.getInteger("power");
         EnumChatFormatting color;
+
         if (power <= ((table.MAX_POWER * 12.5) / 100)) {
             color = EnumChatFormatting.DARK_RED;
         } else if (power <= ((table.MAX_POWER * 25) / 100)) {
@@ -61,6 +62,7 @@ public class WailaWorkshop implements IWailaDataProvider {
     public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
         TileEntityTable table = (TileEntityTable)te;
         tag.setInteger("power", table.getPower());
+
         return tag;
     }
 }

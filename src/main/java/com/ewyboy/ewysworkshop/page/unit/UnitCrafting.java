@@ -6,6 +6,7 @@ import com.ewyboy.ewysworkshop.gui.container.slot.SlotUnitCraftingOutput;
 import com.ewyboy.ewysworkshop.gui.container.slot.SlotUnitCraftingResult;
 import com.ewyboy.ewysworkshop.gui.container.slot.SlotUnitCraftingStorage;
 import com.ewyboy.ewysworkshop.item.Upgrade;
+import com.ewyboy.ewysworkshop.loaders.ConfigLoader;
 import com.ewyboy.ewysworkshop.page.Page;
 import com.ewyboy.ewysworkshop.tileentity.TileEntityTable;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -92,7 +93,7 @@ public class UnitCrafting extends Unit {
         lockedRecipeGeneration = true;
         try {
             onCrafting(inventoryCrafting, player == null, false);
-        }finally {
+        } finally {
             lockedRecipeGeneration = false;
         }
         onGridChanged();
@@ -102,20 +103,23 @@ public class UnitCrafting extends Unit {
         if (itemStack == null) {
             return;
         }
+
         Item item = itemStack.getItem();
 
         try {
             FMLCommonHandler.instance().firePlayerCraftingEvent(player, itemStack, inventoryCrafting);
-        }catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            if (ConfigLoader.debugMode) ex.printStackTrace();
         }
+
         if(player != null) {
             player.addStat(StatList.objectCraftStats[Item.getIdFromItem(item)], itemStack.stackSize);
         }
+
         try {
             item.onCreated(itemStack, table.getWorldObj(), player);
-        }catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            if (ConfigLoader.debugMode) ex.printStackTrace();
         }
 
         if (player != null) {
@@ -212,19 +216,12 @@ public class UnitCrafting extends Unit {
                     ItemStack containerItem = itemStack.getItem().getContainerItem(itemStack);
                     if (!containerItem.isItemStackDamageable() || containerItem.getItemDamage() <= containerItem.getMaxDamage()) {
                         //TODO where should the container go?
-                        if (false && itemStack.getItem().doesContainerItemLeaveCraftingGrid(itemStack)) {
-                            if (!fake) {
-                                table.spitOutItem(containerItem);
-                            }
-                        }else{
-                            crafting.setInventorySlotContents(id, containerItem);
-                        }
+                        crafting.setInventorySlotContents(id, containerItem);
                     }
                 }
             }
         }
     }
-
 
     private CraftingBase inventoryCrafting = new CraftingWrapper();
 
@@ -275,9 +272,9 @@ public class UnitCrafting extends Unit {
     private boolean hadAutoCraft;
     private boolean firstAutoCraftCheck = true;
     public void onUpgradeChange() {
+
         boolean autoCraft = table.getUpgradePage().hasUpgrade(id, Upgrade.AUTO_CRAFTER);
         boolean update = firstAutoCraftCheck || (autoCraft && !hadAutoCraft);
-
 
         hadAutoCraft = autoCraft;
         firstAutoCraftCheck = false;
@@ -289,6 +286,7 @@ public class UnitCrafting extends Unit {
 
 
     private class CraftingWrapper extends CraftingBase {
+
         @Override
         public ItemStack getStackInSlot(int id) {
             return table.getStackInSlot(gridId + id);
