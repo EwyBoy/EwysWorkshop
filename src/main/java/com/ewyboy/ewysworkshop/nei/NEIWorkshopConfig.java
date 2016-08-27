@@ -2,6 +2,8 @@ package com.ewyboy.ewysworkshop.nei;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+
+import com.ewyboy.ewysworkshop.dependencies.nei.INEICallback;
 import com.ewyboy.ewysworkshop.gui.GuiTable;
 import com.ewyboy.ewysworkshop.main.EwysWorkshop;
 import com.ewyboy.ewysworkshop.util.StringMap;
@@ -13,7 +15,7 @@ public class NEIWorkshopConfig implements IConfigureNEI {
         OverlayWrapper overlay = new OverlayWrapper();
         API.registerGuiOverlay(GuiTable.class, "crafting", overlay);
         API.registerGuiOverlayHandler(GuiTable.class, overlay, "crafting");
-        EwysWorkshop.nei = new NEICallback();
+        EwysWorkshop.nei = (INEICallback) new NEICallback();
     }
 
     @Override

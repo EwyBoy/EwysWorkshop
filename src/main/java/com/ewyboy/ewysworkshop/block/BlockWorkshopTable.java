@@ -3,6 +3,8 @@ package com.ewyboy.ewysworkshop.block;
 import com.ewyboy.ewysworkshop.loaders.CreativeTabLoader;
 import com.ewyboy.ewysworkshop.main.EwysWorkshop;
 import com.ewyboy.ewysworkshop.tileentity.TileEntityTable;
+import com.ewyboy.ewysworkshop.util.Logger;
+
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,6 +21,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class BlockWorkshopTable extends BaseBlock {
 
@@ -119,7 +123,6 @@ public class BlockWorkshopTable extends BaseBlock {
             IInventory inventory = (IInventory)te;
             for (int i = 0; i < inventory.getSizeInventory(); ++i) {
                 ItemStack item = inventory.getStackInSlotOnClosing(i);
-
                 if (item != null) {
                     float offsetX = world.rand.nextFloat() * 0.8F + 0.1F;
                     float offsetY = world.rand.nextFloat() * 0.8F + 0.1F;

@@ -30,11 +30,11 @@ public class BaseBlock extends BlockContainer {
         setCreativeTab(CreativeTabLoader.EwysWorkshopTab);
     }
 
-    @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        this.dropInventory(world, x, y, z);
-        super.breakBlock(world, x, y, z, block, meta);
-    }
+//    @Override
+//    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+//        this.dropInventory(world, x, y, z);
+//        super.breakBlock(world, x, y, z, block, meta);
+//    }
 
     public static int blockFacing;
 

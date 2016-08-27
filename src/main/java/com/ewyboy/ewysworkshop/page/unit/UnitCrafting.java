@@ -216,6 +216,7 @@ public class UnitCrafting extends Unit {
                     ItemStack containerItem = itemStack.getItem().getContainerItem(itemStack);
                     if (!containerItem.isItemStackDamageable() || containerItem.getItemDamage() <= containerItem.getMaxDamage()) {
                         //TODO where should the container go?
+//                    	if(containerItem.getItemDamage() > 0)
                         crafting.setInventorySlotContents(id, containerItem);
                     }
                 }
