@@ -20,7 +20,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 
 import java.util.concurrent.TimeUnit;
 
-@Mod(modid = StringMap.ID, name = StringMap.Name, version = StringMap.VersionBuildName, acceptedMinecraftVersions = "["+StringMap.MinecraftVersion+"]")
+@Mod(modid = StringMap.ID, name = StringMap.Name, version = StringMap.VersionBuildName, acceptedMinecraftVersions = "["+StringMap.MinecraftVersion+"]", acceptableRemoteVersions="1.1.2")
 public class EwysWorkshop {
 
     public static INEICallback nei;
